@@ -1,7 +1,8 @@
 Mojave.Astrology
 ================
 
-A .NET abstraction of the Swiss Ephemeris
+A .NET abstraction of the Swiss Ephemeris.  Please see the Swiss Ephemeris for licensing information: http://www.astro.com/swisseph/
+
 
 To use:
 
