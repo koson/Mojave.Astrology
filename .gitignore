@@ -1,0 +1,7 @@
+*.suo
+*.user
+obj
+bin
+*.pubxml
+App_Data
+Web.Release.config
