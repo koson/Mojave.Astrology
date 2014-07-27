@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Mojave.Astrology.Models;
 
-namespace Mojave.Astrology.Models {
+namespace Mojave.Astrology {
     internal static class CalculatedPoints {
         internal static double SouthNode(double julianDay, double longitude, double latitude, IEnumerable<IPosition> positions, IEnumerable<ICusp> cusps) {
             var northNode = positions.FirstOrDefault(position => position.Point == Points.NorthNode);

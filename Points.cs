@@ -1,9 +1,11 @@
-﻿namespace Mojave.Astrology.Models {
+﻿using Mojave.Astrology.Models;
+
+namespace Mojave.Astrology {
     public static class Points {
-        public static IPoint Ascendant = new SpecialPoint(1, "Ascendant");
-        public static IPoint Midheaven = new SpecialPoint(2, "Midheaven");
-        public static IPoint Vertex = new SpecialPoint(3, "Vertex");
-        public static IPoint EquatorialAscendant = new SpecialPoint(4, "Equatorial Ascendant");
+        public static IPoint Ascendant = new Angle(1, "Ascendant");
+        public static IPoint Midheaven = new Angle(2, "Midheaven");
+        public static IPoint Vertex = new Angle(3, "Vertex");
+        public static IPoint EquatorialAscendant = new Angle(4, "Equatorial Ascendant");
         public static IPoint Sun = new SwissEphemerisPoint(10, "Sun", SwissEph.Positions.SE_SUN);
         public static IPoint Moon = new SwissEphemerisPoint(11, "Moon", SwissEph.Positions.SE_MOON);
         public static IPoint Mercury = new SwissEphemerisPoint(12, "Mercury", SwissEph.Positions.SE_MERCURY);

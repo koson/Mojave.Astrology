@@ -10,7 +10,7 @@ namespace Mojave.Astrology.Providers {
         public int Priority { get { return 5; } }
 
         public bool Match(IPoint point) {
-            return point is SpecialPoint;
+            return point is Angle;
         }
 
         public double Calculate(IPoint point, double julianDay, double longitude, double latitude, IEnumerable<IPosition> positions, IEnumerable<ICusp> cusps) {
