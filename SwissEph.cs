@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Odbc;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -22,15 +23,41 @@ namespace Mojave.Astrology {
         [DllImport("SwissEphemeris/swedll32.dll")]
         private static extern void swe_close();
 
+        [DllImport("SwissEphemeris/swedll64.dll", EntryPoint = "swe_set_ephe_path")]
+        private static extern void swe_set_ephe_path64(string path);
+
+        [DllImport("SwissEphemeris/swedll64.dll", EntryPoint = "swe_calc_ut")]
+        private static extern int swe_calc_ut64(double tjd_ut, int ipl,
+            int iflag, double[] xx, StringBuilder serr);
+
+        [DllImport("SwissEphemeris/swedll64.dll", EntryPoint = "swe_houses")]
+        private static extern int swe_houses64(double tjd_ut, double geolat, double geolon,
+            int hsys, double[] cusps, double[] ascmc);
+
+        [DllImport("SwissEphemeris/swedll64.dll", EntryPoint = "swe_close")]
+        private static extern void swe_close64();
+
+
         internal SwissEph() {
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase), "Ephemerides");
-            swe_set_ephe_path(path.Remove(0, path.IndexOf('\\') + 1));
+            path = path.Remove(0, path.IndexOf('\\') + 1);
+            if (Environment.Is64BitProcess) {
+                swe_set_ephe_path64(path);
+            } else {
+                swe_set_ephe_path(path);
+            }
         }
 
         internal double Calculate(double julianDay, int position) {
             var errorMessage = new StringBuilder(256);
             var degrees = new double[6];
-            swe_calc_ut(julianDay, position, (int)Flags.SEFLG_SPEED | (int)Flags.SEFLG_TRUEPOS, degrees, errorMessage);
+
+            if (Environment.Is64BitProcess) {
+                swe_calc_ut64(julianDay, position, (int) Flags.SEFLG_SPEED | (int) Flags.SEFLG_TRUEPOS, degrees, errorMessage);
+            } else {
+                swe_calc_ut(julianDay, position, (int)Flags.SEFLG_SPEED | (int)Flags.SEFLG_TRUEPOS, degrees, errorMessage);                 
+            }
+
             if (!String.IsNullOrEmpty(errorMessage.ToString()))
                 throw new Exception(errorMessage.ToString());
             return degrees[0];
@@ -39,12 +66,22 @@ namespace Mojave.Astrology {
         internal Tuple<double[], double[]> Houses(double julianDay, double longitude, double latitude) {
             var cusps = new double[13];
             var ascmc = new double[10];
-            swe_houses(julianDay, latitude, longitude, HouseSystems.Placidus, cusps, ascmc);
+
+            if (Environment.Is64BitProcess) {
+                swe_houses64(julianDay, latitude, longitude, HouseSystems.Placidus, cusps, ascmc);
+            } else {
+                swe_houses(julianDay, latitude, longitude, HouseSystems.Placidus, cusps, ascmc);
+            }
+
             return Tuple.Create(cusps, ascmc);
         }
 
         void IDisposable.Dispose() {
-            swe_close();
+            if (Environment.Is64BitProcess) {
+                swe_close64();
+            } else {
+                swe_close();
+            }
         }
 
         internal static class Positions {

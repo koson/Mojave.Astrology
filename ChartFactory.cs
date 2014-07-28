@@ -28,7 +28,7 @@ namespace Mojave.Astrology {
                 .ToArray();
 
             var cuspProvider = pointProviders.OfType<ICuspProvider>().First();
-            var cusps = cuspProvider.Cusps(julian, longitude, latitude);
+            var cusps = cuspProvider.Cusps(julian, longitude, latitude).ToArray();
 
             return new TChart {
                 Cusps = cusps,
@@ -41,7 +41,7 @@ namespace Mojave.Astrology {
                 .OrderBy(pointProvider => pointProvider.Priority)
                 .FirstOrDefault(pointProvider => pointProvider.Match(point));
             if (provider == null) {
-                throw new ApplicationException("No point provider found for type: " + point.GetType().FullName);
+                throw new ApplicationException(String.Format("No point provider found for point: {0} ({1})", point.Name, point.GetType().FullName));
             }
             return Tuple.Create(provider, point);
         }

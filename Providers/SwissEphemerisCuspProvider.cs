@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Mojave.Astrology.Models;
+﻿using Mojave.Astrology.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mojave.Astrology.Providers {
     public class SwissEphemerisCuspProvider : ICuspProvider {

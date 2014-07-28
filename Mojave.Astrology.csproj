@@ -72,6 +72,9 @@
     <Content Include="SwissEphemeris\swedll32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="SwissEphemeris\swedll64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SwissEphemeris\swete32.exe" />
     <Content Include="SwissEphemeris\swetrm32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -247,6 +250,12 @@
     <None Include="README.md" />
     <None Include="SwissEphemeris\LICENSE" />
     <None Include="SwissEphemeris\swedll32.lib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SwissEphemeris\swedll64.exp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SwissEphemeris\swedll64.lib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SwissEphemeris\swetrm32.lib">
