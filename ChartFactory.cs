@@ -6,7 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Mojave.Astrology {
-    public class ChartFactory {
+    public interface IChartFactory {
+        void SetProviders(IEnumerable<Type> providers);
+        void AddProvider<TProvider>()
+            where TProvider : IPointProvider, new();
+        TChart Calculate<TChart>(DateTime dateTime, double longitude, double latitude, IEnumerable<IPoint> points)
+            where TChart : IChart, new();
+    }
+
+    public class ChartFactory : IChartFactory {
         private readonly List<Type> _pointProviders = new List<Type> {typeof(SwissEphemerisCuspProvider), typeof(SwissEphemerisPointProvider), typeof(SupplementaryPointProvider)};
 
         public void AddProvider<TProvider>() where TProvider : IPointProvider, new() {
@@ -32,7 +40,17 @@ namespace Mojave.Astrology {
 
             return new TChart {
                 Cusps = cusps,
-                Positions = Positions(pointProviders, julian, longitude, latitude, cusps, points)
+                Positions = Positions(pointProviders, julian, longitude, latitude, cusps, points),
+                LocaleTime = new LocaleTime {
+                    JulianDay = julian,
+                    Longitude = longitude,
+                    Latitude = latitude,
+                    Month = dateTime.Month,
+                    Day = dateTime.Day,
+                    Year = dateTime.Year,
+                    Hour = dateTime.Hour,
+                    Minute = dateTime.Minute
+                }
             };
         }
 
